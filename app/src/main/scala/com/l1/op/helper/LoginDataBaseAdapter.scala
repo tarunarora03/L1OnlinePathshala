@@ -13,11 +13,10 @@ import android.content.{ContentValues, Context}
 */
 
 object LoginDataBaseAdapter {
-  val COL_NAME: Int = 1
   val TBL_NAME: String = "USER"
   val DB_CREATE_QUERY = "CREATE TABLE "+TBL_NAME+" ( " +
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, INST_DATE TEXT )";
-
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, PHONE  TEXT , INST_DATE TEXT, TOTAL_QUES TEXT, TOTAL_ANS TEXT)";
+  val where = "USERNAME = ?"
   def apply(context: Context) = new LoginDataBaseAdapter(context)
 
 }
@@ -45,17 +44,18 @@ class LoginDataBaseAdapter(_context: Context) {
   }
 
   //Methods to Insert Delete Update and Search
-  def insertUser(username: String, password: String, email: String, field: String, phoneNumber: String, successAns: Int, totals: Int) = {
+  def insertUser(username: String, password: String, email: String, field: String, phoneNumber: String, successAns: String, totals: String) = {
     val format = new SimpleDateFormat("d-M-y")
     val currDate:String = format.format(Calendar.getInstance().getTime())
     val values: ContentValues = new ContentValues()
     values.put("USERNAME", username)
     values.put("PASSWORD", password)
     values.put("EMAIL", email)
-    values.put("FIELD", phoneNumber)
+    values.put("FIELD", field)
+    values.put("PHONE", phoneNumber)
     values.put("INST_DATE",currDate)
-   // values.put("TOT_QUES", totals)
-    //values.put("TOT_ANS_SUC", successAns)
+    values.put("TOTAL_QUES", totals)
+    values.put("TOTAL_ANS", successAns)
 
     db.insert(TBL_NAME, null, values)
   }
@@ -71,12 +71,19 @@ class LoginDataBaseAdapter(_context: Context) {
     updValues.put("USERNAME", username)
     updValues.put("PASSWORD", password)
 
-    val where = "USERNAME = "
     db.update(TBL_NAME, updValues, where, Array.empty[String])
   }
 
+  def updateScore(username: String,totAns : String, totalQues: String) = {
+    val updValues: ContentValues = new ContentValues()
+    updValues.put("TOTAL_QUES", totalQues)
+    updValues.put("TOTAL_ANS", totAns)
+
+    db.update(TBL_NAME, updValues, where, Array(username))
+  }
+
   def searchUser(userName: String): String = {
-    val cursor: Cursor = db.query(TBL_NAME, null, " USERNAME = ?", Array(userName), null, null, null)
+    val cursor: Cursor = db.query(TBL_NAME, null, where, Array(userName), null, null, null)
     cursor.getCount match {
       case 1 => cursor.moveToFirst()
         val pwd = cursor.getString(cursor.getColumnIndex("PASSWORD"))
@@ -84,6 +91,19 @@ class LoginDataBaseAdapter(_context: Context) {
         return pwd
       case 0 => cursor.close()
         return "NOT_EXISTS"
+    }
+  }
+
+  def fetchScores(userName: String): Array[String] = {
+    val cursor: Cursor = db.query(TBL_NAME, null, " USERNAME = ?", Array(userName), null, null, null)
+    cursor.getCount match {
+      case 1 => cursor.moveToFirst()
+        val ans = cursor.getString(cursor.getColumnIndex("TOTAL_ANS"))
+        val ques = cursor.getString(cursor.getColumnIndex("TOTAL_QUES"))
+        cursor.close()
+        return Array(ans,ques)
+      case 0 => cursor.close()
+        return Array.empty[String]
     }
   }
 }

@@ -17,6 +17,7 @@ object DataBaseHelper {
 class DataBaseHelper(context: Context) extends SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
   override def onCreate(db: SQLiteDatabase) {
+    println(s" ${LoginDataBaseAdapter.DB_CREATE_QUERY}")
     db.execSQL(LoginDataBaseAdapter.DB_CREATE_QUERY)
   }
 
