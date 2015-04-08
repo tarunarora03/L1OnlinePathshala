@@ -16,10 +16,14 @@
     <string name="error_field_required">This field is required</string>
     <string name="phoneNumber">Phone Number</string>
     <string name="reg_fullname">FullName</string>
+    <string name="prompt_username">UserName</string>
     <string name="iit">IIT</string>
     <string name="pmt">PMT</string>
     <string name="sample_ques">Let X be the energy needed to raise the temperature of 5 moles of nitrogen held at constant pressure by one degree. Let Y be the energy needed to raise 5 moles of carbon monoxide by one degree with the pressure held constant. What is the ratio X:Y?</string>
     <string name="options_ans">Please choose an ans below:</string>
     <string name="btn_submit_ans">Submit</string>
+    <string name= "btn_sign_up">Sign Up</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="or">OR</string>
 
 </resources>

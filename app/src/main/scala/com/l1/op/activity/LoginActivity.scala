@@ -3,11 +3,12 @@ package com.l1.op.activity
 import android.app.Activity
 import android.os.Bundle
 import android.view.View.OnClickListener
-import android.widget.{Toast, Button, EditText, TextView}
+import android.widget._
 import com.l1.op.R
 import com.l1.op.helper.{DataBaseHelper, LoginDataBaseAdapter}
 import android.view.View
 import android.content.{Intent, Context}
+import android.net.Uri
 
 /**
  * Created by Tarun on 4/4/2015.
@@ -19,6 +20,17 @@ class LoginActivity extends Activity {
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_login)
+
+    val clickHeader = findViewById(R.id.header).asInstanceOf[ImageView]
+    clickHeader.setOnClickListener(new OnClickListener {
+      override def onClick(v: View): Unit = {
+        val intentHeader: Intent = new Intent()
+        intentHeader.setAction(Intent.ACTION_VIEW)
+        intentHeader.addCategory(Intent.CATEGORY_BROWSABLE)
+        intentHeader.setData(Uri.parse("http://www.l1coaching.co.in"))
+        startActivity(intentHeader)
+      }
+    })
 
     val usernameF = findViewById(R.id.username).asInstanceOf[EditText]
     val emailF = findViewById(R.id.email).asInstanceOf[EditText]

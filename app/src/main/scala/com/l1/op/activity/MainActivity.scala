@@ -2,10 +2,11 @@ package com.l1.op.activity
 
 import android.app.Activity
 import android.content.{Intent, DialogInterface}
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.{RadioButton, Button, RadioGroup, TextView}
+import android.widget._
 import com.l1.op.R
 import com.l1.op.helper.LoginDataBaseAdapter
 
@@ -21,6 +22,18 @@ class MainActivity extends Activity {
     setContentView(R.layout.activity_main)
     val extras: Bundle = getIntent().getExtras()
     val userName = extras.getString("username")
+
+    val clickHeader = findViewById(R.id.header).asInstanceOf[ImageView]
+    clickHeader.setOnClickListener(new OnClickListener {
+      override def onClick(v: View): Unit = {
+        val intentHeader: Intent = new Intent()
+        intentHeader.setAction(Intent.ACTION_VIEW)
+        intentHeader.addCategory(Intent.CATEGORY_BROWSABLE)
+        intentHeader.setData(Uri.parse("http://www.l1coaching.co.in"))
+        startActivity(intentHeader)
+      }
+    })
+
     val scores: Array[String] = loginDatabaseAdapter.fetchScores(userName)
     val textView = findViewById(R.id.username).asInstanceOf[TextView]
     val scoreView = findViewById(R.id.ScoreResults).asInstanceOf[TextView]

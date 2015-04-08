@@ -4,12 +4,14 @@
     android:layout_height="match_parent">
 
     <!--  header_r Starts-->
-    <LinearLayout
+    <ImageView
         android:id="@+id/header"
         android:layout_width="fill_parent"
         android:layout_height="45dip"
         android:background="@layout/header_repeat"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"
+        android:clickable="true"
+        android:contentDescription="L1OnlinePathshala"></ImageView>
     <!--  header_r Ends -->
 
     <!-- Footer Start -->
@@ -163,8 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_submit_ans"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/answers" />
+        android:layout_below="@+id/answers"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

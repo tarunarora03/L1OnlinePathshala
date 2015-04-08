@@ -10,12 +10,14 @@
         android:background="#ffffff">
 
         <!--  header_r Starts-->
-        <LinearLayout
+        <ImageView
             android:id="@+id/header"
             android:layout_width="fill_parent"
             android:layout_height="45dip"
             android:background="@layout/header_repeat"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical"
+            android:clickable="true"
+            android:contentDescription="L1OnlinePathshala"></ImageView>
         <!--  header_r Ends -->
 
         <!-- Footer Start -->
@@ -53,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="16dp"
-                android:hint="@string/reg_fullname"
+                android:hint="@string/prompt_username"
                 android:singleLine="true" />
 
             <EditText
