@@ -48,7 +48,7 @@
                 android:layout_alignParentStart="true"
                 android:paddingLeft="5dp" />
             <TextView
-                android:id="@+id/username"
+                android:id="@+id/username_readOnly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -160,7 +160,7 @@
         </RadioGroup>
 
     <Button
-        android:id="@+id/btnDisplay"
+        android:id="@+id/submit_button"
         style="?android:textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

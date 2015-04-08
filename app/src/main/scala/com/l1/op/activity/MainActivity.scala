@@ -9,18 +9,19 @@ import android.view.View.OnClickListener
 import android.widget._
 import com.l1.op.R
 import com.l1.op.helper.LoginDataBaseAdapter
+import com.l1.op.util.{TypedActivity, TR, TypedView}
 
 /**
  * Created by Tarun on 4/5/2015.
  */
-class MainActivity extends Activity {
+class MainActivity extends Activity with TypedActivity{
 
   lazy val loginDatabaseAdapter = new LoginDataBaseAdapter(this)
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    val extras: Bundle = getIntent().getExtras()
+    val extras: Bundle = getIntent.getExtras
     val userName = extras.getString("username")
 
     val clickHeader = findViewById(R.id.header).asInstanceOf[ImageView]
@@ -35,31 +36,32 @@ class MainActivity extends Activity {
     })
 
     val scores: Array[String] = loginDatabaseAdapter.fetchScores(userName)
-    val textView = findViewById(R.id.username).asInstanceOf[TextView]
+    val userTextView = findView(TR.usernameR)
     val scoreView = findViewById(R.id.ScoreResults).asInstanceOf[TextView]
-    textView.setText(userName)
+    userTextView.setText(userName)
     scoreView.setText(scores(0) + "/" + scores(1))
 
     addListenerOnSubmit(userName,scores)
   }
 
   def addListenerOnSubmit(username: String, scores: Array[String]) = {
-    val ansGroup = findViewById(R.id.answers).asInstanceOf[RadioGroup]
-    val btnSubmit = findViewById(R.id.btnDisplay).asInstanceOf[Button]
+
+    val ansGroup = findView(TR.selectedAnsRadioGrp)
+    val btnSubmit = findView(TR.submitButton)
 
     btnSubmit.setOnClickListener(new OnClickListener {
       override def onClick(v: View): Unit = {
         val selectedOpt = ansGroup.getCheckedRadioButtonId
         val selAns = findViewById(selectedOpt).asInstanceOf[RadioButton]
-        val idx: Int = ansGroup.indexOfChild(selAns);
+        val idx: Int = ansGroup.indexOfChild(selAns)
         idx match {
           case 1 => loginDatabaseAdapter.updateScore(username, (scores(0).toInt+1).toString, (scores(1).toInt+1).toString)
-          case _ => loginDatabaseAdapter.updateScore(username, (scores(0).toInt).toString, (scores(1).toInt+1).toString)
+          case _ => loginDatabaseAdapter.updateScore(username, scores(0).toInt.toString, (scores(1).toInt+1).toString)
         }
-        val intent: Intent = getIntent();
+        val intent: Intent = getIntent
         intent.putExtra("username", username)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        finish()
         startActivity(intent)
       }
     })

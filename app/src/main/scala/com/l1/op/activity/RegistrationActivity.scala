@@ -9,17 +9,18 @@ import com.l1.op.helper.{DataBaseHelper, LoginDataBaseAdapter}
 import android.view.View
 import android.content.{Intent, Context}
 import android.net.Uri
+import com.l1.op.util.{TypedActivity, TR}
 
 /**
  * Created by Tarun on 4/4/2015.
  */
-class LoginActivity extends Activity {
+class RegistrationActivity extends Activity with TypedActivity{
   lazy val loginDatabaseAdapter = new LoginDataBaseAdapter(this)
   //loginDatabaseAdapter.open()
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_login)
+    setContentView(R.layout.activity_registration)
 
     val clickHeader = findViewById(R.id.header).asInstanceOf[ImageView]
     clickHeader.setOnClickListener(new OnClickListener {
@@ -32,28 +33,27 @@ class LoginActivity extends Activity {
       }
     })
 
-    val usernameF = findViewById(R.id.username).asInstanceOf[EditText]
-    val emailF = findViewById(R.id.email).asInstanceOf[EditText]
-    val passwordF = findViewById(R.id.password).asInstanceOf[EditText]
-    val phoneF = findViewById(R.id.phoneNumber).asInstanceOf[EditText]
+    val usernameF = findView(TR.usernameEditText)
+    val passwordF = findView(TR.passwordEditText)
+    val emailF = findView(TR.emailEditText)
+    val phoneF = findView(TR.phoneEditText)
 
-    val registerButton = findViewById(R.id.register_button).asInstanceOf[Button]
+    val registerButton = findView(TR.registerButton)
     registerButton.setOnClickListener(new OnClickListener {
       override def onClick(v: View): Unit = {
         val username = usernameF.getText.toString
         val email = emailF.getText.toString
         val password = passwordF.getText.toString
         val phone = phoneF.getText.toString
-        println(s"username : ${username}, ${password}, ${email}, ${phone} ")
         if (username.equals("") || password.equals("") || email.equals("") || phone.equals("")) {
-          Toast.makeText(getApplicationContext(), "Field Vaccant", Toast.LENGTH_LONG).show()
+          Toast.makeText(getApplicationContext, "Field Vaccant", Toast.LENGTH_LONG).show()
           return
         } else {
           loginDatabaseAdapter.insertUser(username, password, email, "IIT", phone, "0", "0")
-          Toast.makeText(getApplicationContext(), "Account Successfully Created ", Toast.LENGTH_LONG).show();
-          val intentWelcome :Intent =new Intent(getApplicationContext(),classOf[MainActivity])
+          Toast.makeText(getApplicationContext, "Account Successfully Created ", Toast.LENGTH_LONG).show()
+          val intentWelcome :Intent =new Intent(getApplicationContext,classOf[MainActivity])
           intentWelcome.putExtra("username",username)
-          startActivity(intentWelcome);
+          startActivity(intentWelcome)
         }
       }
 
