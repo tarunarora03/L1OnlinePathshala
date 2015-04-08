@@ -1,6 +1,6 @@
 # L1OnlinePathshala
 
-A Scala based ANdroid application for institutes to send questions to their students in app.
+A Scala based Android application for institutes to send questions to their students in app.
 
 Setup:
 Install ADT
