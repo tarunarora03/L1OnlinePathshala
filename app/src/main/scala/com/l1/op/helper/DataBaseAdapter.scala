@@ -12,17 +12,22 @@ import android.content.{ContentValues, Context}
 * Created by Tarun on 4/4/2015.
 */
 
-object LoginDataBaseAdapter {
-  val TBL_NAME: String = "USER"
-  val DB_CREATE_QUERY = "CREATE TABLE "+TBL_NAME+" ( " +
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, PHONE  TEXT , INST_DATE TEXT, TOTAL_QUES TEXT, TOTAL_ANS TEXT)";
-  val where = "USERNAME = ?"
-  def apply(context: Context) = new LoginDataBaseAdapter(context)
+object DataBaseAdapter {
+  val TBL_USER: String = "USER"
+  val TBL_QUES_CACHE: String =  "QUES"
+  val DB_CREATE_USER_TBL = "CREATE TABLE "+TBL_USER+" ( " +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, PHONE  TEXT , INST_DATE TEXT, TOTAL_QUES TEXT, TOTAL_ANS TEXT, LAST_UPD_DATE TEXT)";
+  val DB_CREATE_CACHE_QUES = "CREATE TABLE "+TBL_QUES_CACHE+" ( " +
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, RECV_DATE TEXT, QUES_DTLS TEXT, ANS_OPT TEXT, CORR_ANS TEXT)";
+
+  val WHERE_USERNAME = "USERNAME = ?"
+  val WHERE_RECVDATE = "RECV_DATE = ?"
+  def apply(context: Context) = new DataBaseAdapter(context)
 
 }
 
-class LoginDataBaseAdapter(_context: Context) {
-  import LoginDataBaseAdapter._
+class DataBaseAdapter(_context: Context) {
+  import DataBaseAdapter._
 
   val context: Context = _context
   val dbHelper: DataBaseHelper = new DataBaseHelper(context);
@@ -56,13 +61,13 @@ class LoginDataBaseAdapter(_context: Context) {
     values.put("INST_DATE",currDate)
     values.put("TOTAL_QUES", totals)
     values.put("TOTAL_ANS", successAns)
+    values.put("LAST_UPD_DATE", currDate)
 
-    db.insert(TBL_NAME, null, values)
+    db.insert(TBL_USER, null, values)
   }
 
   def deleteUser(username: String): Int = {
-    val where = " USERNAME = ";
-    val nbrEntriesDelet = db.delete(TBL_NAME, where, Array(username))
+    val nbrEntriesDelet = db.delete(TBL_USER, WHERE_USERNAME, Array(username))
     nbrEntriesDelet
   }
 
@@ -71,7 +76,7 @@ class LoginDataBaseAdapter(_context: Context) {
     updValues.put("USERNAME", username)
     updValues.put("PASSWORD", password)
 
-    db.update(TBL_NAME, updValues, where, Array.empty[String])
+    db.update(TBL_USER, updValues, WHERE_USERNAME, Array.empty[String])
   }
 
   def updateScore(username: String,totAns : String, totalQues: String) = {
@@ -79,11 +84,11 @@ class LoginDataBaseAdapter(_context: Context) {
     updValues.put("TOTAL_QUES", totalQues)
     updValues.put("TOTAL_ANS", totAns)
 
-    db.update(TBL_NAME, updValues, where, Array(username))
+    db.update(TBL_USER, updValues, WHERE_USERNAME, Array(username))
   }
 
   def searchUser(userName: String): String = {
-    val cursor: Cursor = db.query(TBL_NAME, null, where, Array(userName), null, null, null)
+    val cursor: Cursor = db.query(TBL_USER, null, WHERE_USERNAME, Array(userName), null, null, null)
     cursor.getCount match {
       case 1 => cursor.moveToFirst()
         val pwd = cursor.getString(cursor.getColumnIndex("PASSWORD"))
@@ -95,7 +100,7 @@ class LoginDataBaseAdapter(_context: Context) {
   }
 
   def fetchScores(userName: String): Array[String] = {
-    val cursor: Cursor = db.query(TBL_NAME, null, " USERNAME = ?", Array(userName), null, null, null)
+    val cursor: Cursor = db.query(TBL_USER, null, WHERE_USERNAME, Array(userName), null, null, null)
     cursor.getCount match {
       case 1 => cursor.moveToFirst()
         val ans = cursor.getString(cursor.getColumnIndex("TOTAL_ANS"))
@@ -106,4 +111,6 @@ class LoginDataBaseAdapter(_context: Context) {
         return Array.empty[String]
     }
   }
+
+  def getTodayQuestion(todayDate: String) = ???
 }

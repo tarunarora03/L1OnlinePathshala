@@ -1,22 +1,22 @@
 package com.l1.op.activity
 
 import android.app.Activity
-import android.content.{Intent, DialogInterface}
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget._
 import com.l1.op.R
-import com.l1.op.helper.LoginDataBaseAdapter
-import com.l1.op.util.{TypedActivity, TR, TypedView}
+import com.l1.op.helper.DataBaseAdapter
+import com.l1.op.util.{TR, TypedActivity}
 
 /**
  * Created by Tarun on 4/5/2015.
  */
 class MainActivity extends Activity with TypedActivity{
 
-  lazy val loginDatabaseAdapter = new LoginDataBaseAdapter(this)
+  lazy val databaseAdapter = new DataBaseAdapter(this)
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class MainActivity extends Activity with TypedActivity{
       }
     })
 
-    val scores: Array[String] = loginDatabaseAdapter.fetchScores(userName)
+    val scores: Array[String] = databaseAdapter.fetchScores(userName)
     val userTextView = findView(TR.usernameR)
     val scoreView = findViewById(R.id.ScoreResults).asInstanceOf[TextView]
     userTextView.setText(userName)
@@ -55,8 +55,8 @@ class MainActivity extends Activity with TypedActivity{
         val selAns = findViewById(selectedOpt).asInstanceOf[RadioButton]
         val idx: Int = ansGroup.indexOfChild(selAns)
         idx match {
-          case 1 => loginDatabaseAdapter.updateScore(username, (scores(0).toInt+1).toString, (scores(1).toInt+1).toString)
-          case _ => loginDatabaseAdapter.updateScore(username, scores(0).toInt.toString, (scores(1).toInt+1).toString)
+          case 1 => databaseAdapter.updateScore(username, (scores(0).toInt+1).toString, (scores(1).toInt+1).toString)
+          case _ => databaseAdapter.updateScore(username, scores(0).toInt.toString, (scores(1).toInt+1).toString)
         }
         val intent: Intent = getIntent
         intent.putExtra("username", username)
@@ -65,5 +65,10 @@ class MainActivity extends Activity with TypedActivity{
         startActivity(intent)
       }
     })
+  }
+
+  override def onDestroy(): Unit ={
+    super.onDestroy()
+    databaseAdapter.close()
   }
 }

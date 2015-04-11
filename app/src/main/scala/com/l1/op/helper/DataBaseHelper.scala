@@ -6,8 +6,8 @@ import android.util.Log;
 import DataBaseHelper._
 
 /**
-* Created by Tarun on 4/4/2015.
-*/
+ * Created by Tarun on 4/4/2015.
+ */
 
 object DataBaseHelper {
   val DB_NAME: String = "L1OP.DB"
@@ -17,8 +17,10 @@ object DataBaseHelper {
 class DataBaseHelper(context: Context) extends SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
   override def onCreate(db: SQLiteDatabase) {
-    println(s" ${LoginDataBaseAdapter.DB_CREATE_QUERY}")
-    db.execSQL(LoginDataBaseAdapter.DB_CREATE_QUERY)
+    Log.d("DATABASE:.", "Creating Database.........")
+    db.execSQL(DataBaseAdapter.DB_CREATE_USER_TBL)
+    db.execSQL(DataBaseAdapter.DB_CREATE_CACHE_QUES)
+    Log.d("DATABASE:", "Created Successfully.......")
   }
 
   // Called when there is a database version mismatch meaning that the version of the database on disk needs to be upgraded to the current version.

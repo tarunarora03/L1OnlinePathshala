@@ -1,21 +1,21 @@
 package com.l1.op.activity
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.view.View.OnClickListener
 import android.widget._
 import com.l1.op.R
-import com.l1.op.helper.{DataBaseHelper, LoginDataBaseAdapter}
-import android.view.View
-import android.content.{Intent, Context}
-import android.net.Uri
-import com.l1.op.util.{TypedActivity, TR}
+import com.l1.op.helper.DataBaseAdapter
+import com.l1.op.util.{TR, TypedActivity}
 
 /**
  * Created by Tarun on 4/4/2015.
  */
 class RegistrationActivity extends Activity with TypedActivity{
-  lazy val loginDatabaseAdapter = new LoginDataBaseAdapter(this)
+  lazy val databaseAdapter = new DataBaseAdapter(this)
   //loginDatabaseAdapter.open()
 
   override def onCreate(savedInstanceState: Bundle) {
@@ -49,7 +49,7 @@ class RegistrationActivity extends Activity with TypedActivity{
           Toast.makeText(getApplicationContext, "Field Vaccant", Toast.LENGTH_LONG).show()
           return
         } else {
-          loginDatabaseAdapter.insertUser(username, password, email, "IIT", phone, "0", "0")
+          databaseAdapter.insertUser(username, password, email, "IIT", phone, "0", "0")
           Toast.makeText(getApplicationContext, "Account Successfully Created ", Toast.LENGTH_LONG).show()
           val intentWelcome :Intent =new Intent(getApplicationContext,classOf[MainActivity])
           intentWelcome.putExtra("username",username)
@@ -61,6 +61,6 @@ class RegistrationActivity extends Activity with TypedActivity{
   }
   override def onDestroy(): Unit ={
     super.onDestroy()
-    //loginDatabaseAdapter.close()
+    databaseAdapter.close()
   }
 }
