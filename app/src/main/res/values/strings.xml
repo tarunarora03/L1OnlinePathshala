@@ -25,5 +25,7 @@
     <string name= "btn_sign_up">Sign Up</string>
     <string name="btn_sign_in">Sign In</string>
     <string name="or">OR</string>
+    <string name="notificationMsg">You have a new question available today.</string>
+    <string name="header_url">http://www.l1coaching.co.in</string>
 
 </resources>
