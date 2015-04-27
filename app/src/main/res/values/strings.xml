@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">L1OnlinePathshala</string>
+    <string name="app_title">L1OP</string>
 
     <string name="welcome">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -27,5 +28,13 @@
     <string name="or">OR</string>
     <string name="notificationMsg">You have a new question available today.</string>
     <string name="header_url">http://www.l1coaching.co.in</string>
+    <string name="button_text_with_next">Submit &amp; Next</string>
+    <string name="button_text_no_next">Submit</string>
+    <string name="no_questions">You have successfully answered all the questions. Please visit tomorrow for new questions.</string>
 
+
+    <!-- Screen Labels -->
+    <string name="Lwelcome">Welcome</string>
+    <string name="Lscore">Your current score is</string>
+    <string name="Lquestions">Question(s)</string>
 </resources>

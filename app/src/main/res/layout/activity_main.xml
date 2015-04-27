@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
     <!--  header_r Starts-->
@@ -9,9 +9,9 @@
         android:layout_width="fill_parent"
         android:layout_height="45dip"
         android:background="@layout/header_repeat"
-        android:orientation="vertical"
         android:clickable="true"
-        android:contentDescription="L1OnlinePathshala"></ImageView>
+        android:contentDescription="L1OnlinePathshala"
+        android:orientation="vertical"></ImageView>
     <!--  header_r Ends -->
 
     <!-- Footer Start -->
@@ -27,145 +27,170 @@
 
     <!-- Person Details -->
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
         android:layout_marginTop="1dp"
-        android:orientation="vertical"
-        android:id="@+id/tableLayout">
-        <TableRow android:id="@+id/tableRow1"
+        android:orientation="vertical">
+
+        <TableRow
+            android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/Welcome"
                 style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:paddingLeft="5dp" />
+                android:layout_centerVertical="true"
+                android:paddingLeft="5dp"
+                android:text="@string/Lwelcome"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
             <TextView
                 android:id="@+id/username_readOnly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/Welcome"
+                android:layout_toRightOf="@+id/Welcome"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:textColor="@color/abc_primary_text_material_light"
                 android:textSize="@dimen/abc_text_size_display_1_material"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/Welcome"
-                android:layout_toEndOf="@+id/Welcome" />
+                android:textStyle="bold" />
         </TableRow>
         <!-- Blank Line Seperator -->
-              <!-- Score Details -->
-        <TableRow android:id="@+id/tableRow2"
+        <!-- Score Details -->
+        <TableRow
+            android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dip">
+
             <TextView
-                android:id="@+id/Score"
+                android:id="@+id/score"
                 style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your current score is :"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:paddingBottom="10dp" />
+                android:paddingBottom="10dp"
+                android:text="@string/Lscore"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/ScoreResults"
+                android:id="@+id/scoreResults"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_column="4"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:textColor="@color/abc_search_url_text_normal"
                 android:textSize="@dimen/abc_text_size_body_1_material"
-                android:layout_alignParentTop="true"
-                android:layout_column="4" />
+                android:textStyle="bold" />
 
         </TableRow>
     </TableLayout>
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/tableLayout"
-    android:id="@+id/linearLayout"
-    android:layout_marginTop="5dp"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Today's Question"
-        android:textColor="#ff000000"
-        android:textStyle="bold"
-        android:paddingLeft="5dp" />
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#ff101eff"
-         />
-    <TextView
-        android:id="@+id/sampleques"
+    <LinearLayout
+        android:id="@+id/questionHeaderLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="16dp"
-        android:text="@string/sample_ques"
-        android:paddingLeft="5dp" />
-    <TextView
-        android:id="@+id/ansText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="@string/options_ans"
-        android:paddingTop="10dp"
-        android:textStyle="bold"
-        android:textColor="#fd000000"
-        android:paddingLeft="5dp" />
-</LinearLayout>
+        android:layout_below="@+id/tableLayout"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
 
-    <RadioGroup
-        android:id="@+id/answers"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/Lquestions"
+            android:textColor="#ff000000"
+            android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/rOpt1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5:7"
-            android:checked="true" />
-        <RadioButton
-            android:id="@+id/rOpt2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1:1" />
-        <RadioButton
-            android:id="@+id/rOpt3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="7:5" />
-        <RadioButton
-            android:id="@+id/rOpt4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="7:9" />
-        </RadioGroup>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ff101eff" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/submit_button"
-        style="?android:textAppearanceSmall"
-        android:layout_width="wrap_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/questionviewpager"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_submit_ans"
-        android:layout_below="@+id/answers"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/questionHeaderLayout">
+
+    </android.support.v4.view.ViewPager>
+
+    <!--
+        <LinearLayout
+            android:id="@+id/questionDtlsLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tableLayout"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sampleques"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="5dp"
+                android:text="@string/sample_ques" />
+
+            <TextView
+                android:id="@+id/ansText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingTop="10dp"
+                android:text="@string/options_ans"
+                android:textColor="#fd000000"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/answers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout"
+                android:paddingLeft="5dp">
+
+                <RadioButton
+                    android:id="@+id/rOpt1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="5:7" />
+
+                <RadioButton
+                    android:id="@+id/rOpt2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1:1" />
+
+                <RadioButton
+                    android:id="@+id/rOpt3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7:5" />
+
+                <RadioButton
+                    android:id="@+id/rOpt4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7:9" />
+            </RadioGroup>
+
+        </LinearLayout>
+    -->
+
 
 </RelativeLayout>

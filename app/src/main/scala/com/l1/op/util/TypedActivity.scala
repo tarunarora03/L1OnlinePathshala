@@ -18,10 +18,11 @@ object TR {
   val registerButton = TypedResource[Button](R.id.register_button)
   val submitButton = TypedResource[Button](R.id.submit_button)
 
-  val selectedAnsRadioGrp = TypedResource[RadioGroup](R.id.answers)
+  val selectedAnsRadioGrp = TypedResource[RadioGroup](R.id.answersgroup)
   val selectedFieldRadioGrp = TypedResource[RadioGroup](R.id.field)
 
   val usernameR = TypedResource[TextView](R.id.username_readOnly)
+  val scoreResultsR = TypedResource[TextView](R.id.scoreResults)
 
   val header = TypedResource[ImageView](R.id.header)
 }
@@ -41,7 +42,7 @@ trait TypedActivityHolder {
 
   def findView[T](tr: TypedResource[T]) = activity.findViewById(tr.id).asInstanceOf[T]
 
-  implicit def addOnClickToViews(view : View) = new ViewOnClick(view)
+  implicit def addOnClickToViews(view: View) = new ViewOnClick(view)
 }
 
 trait TypedActivity extends Activity with TypedActivityHolder {
@@ -58,10 +59,12 @@ object TypedResource {
   }
 }
 
-class ViewOnClick(view : View) {
-  def onClick(action : View => Any) = {
+class ViewOnClick(view: View) {
+  def onClick(action: View => Any) = {
     view.setOnClickListener(new View.OnClickListener() {
-      def onClick(v : View) { action(v) }
+      def onClick(v: View) {
+        action(v)
+      }
     })
   }
 }

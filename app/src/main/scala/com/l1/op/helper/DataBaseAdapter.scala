@@ -1,33 +1,38 @@
 package com.l1.op.helper
 
-import java.sql.SQLException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase;
 import android.content.{ContentValues, Context}
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 
 /**
-* Created by Tarun on 4/4/2015.
-*/
+ * Created by Tarun on 4/4/2015.
+ */
+
+case class Questions(date: String, questionText: String, ansArray: Array[String], correctAns: String)
 
 object DataBaseAdapter {
   val TBL_USER: String = "USER"
-  val TBL_QUES_CACHE: String =  "QUES"
-  val DB_CREATE_USER_TBL = "CREATE TABLE "+TBL_USER+" ( " +
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, PHONE  TEXT , INST_DATE TEXT, TOTAL_QUES TEXT, TOTAL_ANS TEXT, LAST_UPD_DATE TEXT)";
-  val DB_CREATE_CACHE_QUES = "CREATE TABLE "+TBL_QUES_CACHE+" ( " +
+  val TBL_QUES_CACHE: String = "QUES"
+  val DB_CREATE_USER_TBL = "CREATE TABLE " + TBL_USER + " ( " +
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, PHONE  TEXT , INST_DATE TEXT, TOTAL_QUES TEXT, TOTAL_ANS TEXT, LAST_UPD_DATE TEXT)";
+  val DB_CREATE_CACHE_QUES = "CREATE TABLE " + TBL_QUES_CACHE + " ( " +
     "id INTEGER PRIMARY KEY AUTOINCREMENT, RECV_DATE TEXT, QUES_DTLS TEXT, ANS_OPT TEXT, CORR_ANS TEXT)";
 
   val WHERE_USERNAME = "USERNAME = ?"
   val WHERE_RECVDATE = "RECV_DATE = ?"
+
   def apply(context: Context) = new DataBaseAdapter(context)
 
 }
 
 class DataBaseAdapter(_context: Context) {
-  import DataBaseAdapter._
+
+  import com.l1.op.helper.DataBaseAdapter._
+  import com.l1.op.util.Messages._
 
   val context: Context = _context
   val dbHelper: DataBaseHelper = new DataBaseHelper(context);
@@ -35,14 +40,14 @@ class DataBaseAdapter(_context: Context) {
 
   def getDatabaseInstance(): SQLiteDatabase = db
 
-//  def open(): LoginDataBaseAdapter = {
-//    try {
-//      db = dbHelper.getWritableDatabase
-//      return this
-//    } catch {
-//      case ex: SQLException => throw new SQLException()
-//    }
-//  }
+  //  def open(): LoginDataBaseAdapter = {
+  //    try {
+  //      db = dbHelper.getWritableDatabase
+  //      return this
+  //    } catch {
+  //      case ex: SQLException => throw new SQLException()
+  //    }
+  //  }
 
   def close(): Unit = {
     db.close()
@@ -50,15 +55,14 @@ class DataBaseAdapter(_context: Context) {
 
   //Methods to Insert Delete Update and Search
   def insertUser(username: String, password: String, email: String, field: String, phoneNumber: String, successAns: String, totals: String) = {
-    val format = new SimpleDateFormat("d-M-y")
-    val currDate:String = format.format(Calendar.getInstance().getTime())
+    val currDate: String = dateForamtter.format(Calendar.getInstance().getTime())
     val values: ContentValues = new ContentValues()
     values.put("USERNAME", username)
     values.put("PASSWORD", password)
     values.put("EMAIL", email)
     values.put("FIELD", field)
     values.put("PHONE", phoneNumber)
-    values.put("INST_DATE",currDate)
+    values.put("INST_DATE", currDate)
     values.put("TOTAL_QUES", totals)
     values.put("TOTAL_ANS", successAns)
     values.put("LAST_UPD_DATE", currDate)
@@ -79,7 +83,7 @@ class DataBaseAdapter(_context: Context) {
     db.update(TBL_USER, updValues, WHERE_USERNAME, Array.empty[String])
   }
 
-  def updateScore(username: String,totAns : String, totalQues: String) = {
+  def updateScore(username: String, totAns: String, totalQues: String) = {
     val updValues: ContentValues = new ContentValues()
     updValues.put("TOTAL_QUES", totalQues)
     updValues.put("TOTAL_ANS", totAns)
@@ -99,18 +103,73 @@ class DataBaseAdapter(_context: Context) {
     }
   }
 
-  def fetchScores(userName: String): Array[String] = {
+  def fetchScores(userName: String): Option[CurrentScore] = {
     val cursor: Cursor = db.query(TBL_USER, null, WHERE_USERNAME, Array(userName), null, null, null)
     cursor.getCount match {
       case 1 => cursor.moveToFirst()
         val ans = cursor.getString(cursor.getColumnIndex("TOTAL_ANS"))
         val ques = cursor.getString(cursor.getColumnIndex("TOTAL_QUES"))
         cursor.close()
-        return Array(ans,ques)
+        Some(CurrentScore(ans, ques))
       case 0 => cursor.close()
-        return Array.empty[String]
+        return None
     }
   }
 
-  def getTodayQuestion(todayDate: String) = ???
+  /*
+  A method to cache questions on the daily basis. whenever the webservice is called the question(s) will be cached by calling this
+   */
+
+  def insertQuestions(questions: Seq[Questions]) = {
+    questions.foreach(
+      q => {
+        val values: ContentValues = new ContentValues()
+        values.put("RECV_DATE", q.date)
+        values.put("QUES_DTLS", q.questionText)
+        //TODO: check how to insert array in sqllite
+        values.put("ANS_OPT", convertArrayToString(q.ansArray))
+        values.put("CORR_ANS", q.correctAns)
+        db.insert(TBL_QUES_CACHE, null, values)
+      }
+    )
+  }
+
+  /*
+  If any questions are available then get all of them and display to the user. This can be either 1 or 7
+   */
+  //TODO fix empty Array Issue
+  def getQuestionsFromCache(): Seq[Questions] = {
+    val cursor: Cursor = db.query(TBL_QUES_CACHE, null, null, null, null, null, null)
+    cursor.getCount match {
+      case 0 => cursor.close()
+        Seq.empty[Questions]
+      case _ =>
+        cursor.moveToFirst()
+        val ques: Seq[Questions] = Nil
+        while (!cursor.isAfterLast) {
+          Log.d("DatabaseAdapter", "Iterating the collection to get list of Questions")
+          val q = Questions(cursor.getString(cursor.getColumnIndex("RECV_DATE")),
+            cursor.getString(cursor.getColumnIndex("QUES_DTLS")),
+            convertStringToArray(cursor.getString(cursor.getColumnIndex("ANS_OPT"))),
+            cursor.getString(cursor.getColumnIndex("CORR_ANS")))
+          ques :+ q
+          cursor.moveToNext()
+        }
+        cursor.close()
+        ques
+    }
+  }
+
+  /*
+  Once the ans has been submitted call this to purge the data
+   */
+  def deleteQuestionFromCache(): Int = {
+    val quesPurged = db.delete(TBL_QUES_CACHE, null, null)
+    quesPurged
+  }
+
+  def deleteQuestionFromCache(dates: Seq[String]): Int = {
+    val quesPurged = db.delete(TBL_QUES_CACHE, WHERE_RECVDATE, dates.toArray)
+    quesPurged
+  }
 }
