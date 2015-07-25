@@ -10,15 +10,6 @@
         android:background="#ffffff">
 
         <!--  header_r Starts-->
-        <ImageView
-            android:id="@+id/header"
-            android:layout_width="fill_parent"
-            android:layout_height="45dip"
-            android:background="@layout/header_repeat"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:contentDescription="L1OnlinePathshala"></ImageView>
-        <!--  header_r Ends -->
 
         <!-- Footer Start -->
         <!-- Place footer next to header to set z-index property to minus value -->
@@ -35,7 +26,6 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header"
             android:orientation="vertical"
             android:padding="10dip"
             android:id="@+id/linearLayout2">

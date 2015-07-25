@@ -3,7 +3,6 @@ package com.l1.op.adapters
 import android.support.v4.app.{Fragment, FragmentManager, FragmentStatePagerAdapter}
 import android.util.Log
 import com.l1.op.fragments.QuestionViewFragment
-import com.l1.op.helper.Questions
 import com.l1.op.util.Messages._
 
 

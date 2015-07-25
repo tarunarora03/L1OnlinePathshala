@@ -12,6 +12,7 @@ object TR {
   val passwordEditText = TypedResource[EditText](R.id.password)
   val emailEditText = TypedResource[EditText](R.id.email)
   val phoneEditText = TypedResource[EditText](R.id.phoneNumber)
+  val fullnameEditText = TypedResource[EditText](R.id.fullname)
 
   val signInButton = TypedResource[Button](R.id.sign_in_button)
   val signUpButton = TypedResource[Button](R.id.sign_up_button)
@@ -24,7 +25,9 @@ object TR {
   val usernameR = TypedResource[TextView](R.id.username_readOnly)
   val scoreResultsR = TypedResource[TextView](R.id.scoreResults)
 
-  val header = TypedResource[ImageView](R.id.header)
+  //  val header = TypedResource[ImageView](R.id.header)
+  val noQuestions = TypedResource[TextView](R.id.noquestions)
+
 }
 
 trait TypedViewHolder {

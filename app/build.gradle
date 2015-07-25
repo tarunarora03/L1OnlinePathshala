@@ -7,14 +7,14 @@ android {
 
     defaultConfig {
         applicationId "com.l1.op"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {

@@ -24,13 +24,12 @@ class SignInSignUpActivity extends Activity with TypedActivity {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_signin_signup)
 
-    //Clickable Header Code
-    findViewById(R.id.header).asInstanceOf[ImageView].onClick {
-      view: View => startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.l1coaching.co.in")))
-    }
+    //    //Clickable Header Code
+    //    findViewById(R.id.header).asInstanceOf[ImageView].onClick {
+    //      view: View => startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.l1coaching.co.in")))
+    //    }
 
-    //StartBackgroung AlarmSerice
-    startNotificationService()
+
     //Add button events
     findView(TR.signUpButton).onClick {
       view: View => startActivity(new Intent(getApplicationContext, classOf[RegistrationActivity]))
@@ -61,27 +60,6 @@ class SignInSignUpActivity extends Activity with TypedActivity {
     }
   }
 
-  def startNotificationService() = {
-    val alarmManager = getSystemService(Context.ALARM_SERVICE).asInstanceOf[AlarmManager]
-    val alarmIntent = new Intent(SignInSignUpActivity.this, classOf[BackgroundNotificationReceiver])
-    val pendingIntent = PendingIntent.getBroadcast(SignInSignUpActivity.this, 0, alarmIntent, 0)
-
-    //Set time of Day to send a Notification
-    val alarmStartTime: Calendar = Calendar.getInstance
-    alarmStartTime.set(Calendar.HOUR_OF_DAY, 10)
-    alarmStartTime.set(Calendar.MINUTE, 2)
-    alarmStartTime.set(Calendar.SECOND, 0)
-    alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis, getInterval, pendingIntent)
-  }
-
-  def getInterval(): Int = {
-    val days = 1
-    val hours = 24
-    val minutes = 60
-    val seconds = 60
-    val ms = 1000
-    days * hours * minutes * seconds * ms
-  }
 
   override def onDestroy(): Unit = {
     super.onDestroy()

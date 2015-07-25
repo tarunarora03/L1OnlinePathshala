@@ -1,24 +1,22 @@
 package com.l1.op.helper
 
-import java.text.SimpleDateFormat
 import java.util.Calendar
 
 import android.content.{ContentValues, Context}
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.l1.op.util.Messages._
 
 /**
  * Created by Tarun on 4/4/2015.
  */
 
-case class Questions(date: String, questionText: String, ansArray: Array[String], correctAns: String)
-
 object DataBaseAdapter {
   val TBL_USER: String = "USER"
   val TBL_QUES_CACHE: String = "QUES"
   val DB_CREATE_USER_TBL = "CREATE TABLE " + TBL_USER + " ( " +
-    "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, PHONE  TEXT , INST_DATE TEXT, TOTAL_QUES TEXT, TOTAL_ANS TEXT, LAST_UPD_DATE TEXT)";
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, USERNAME TEXT, FULLNAME TEXT, PASSWORD TEXT, EMAIL TEXT, FIELD TEXT, PHONE  TEXT , STATUS TEXT, INST_DATE TEXT, TOTAL_QUES TEXT, TOTAL_ANS TEXT, LAST_UPD_DATE TEXT)";
   val DB_CREATE_CACHE_QUES = "CREATE TABLE " + TBL_QUES_CACHE + " ( " +
     "id INTEGER PRIMARY KEY AUTOINCREMENT, RECV_DATE TEXT, QUES_DTLS TEXT, ANS_OPT TEXT, CORR_ANS TEXT)";
 
@@ -54,10 +52,11 @@ class DataBaseAdapter(_context: Context) {
   }
 
   //Methods to Insert Delete Update and Search
-  def insertUser(username: String, password: String, email: String, field: String, phoneNumber: String, successAns: String, totals: String) = {
+  def insertUser(username: String, fullname: String, password: String, email: String, field: String, phoneNumber: String, successAns: String, totals: String) = {
     val currDate: String = dateForamtter.format(Calendar.getInstance().getTime())
     val values: ContentValues = new ContentValues()
     values.put("USERNAME", username)
+    values.put("FULLNAME", fullname)
     values.put("PASSWORD", password)
     values.put("EMAIL", email)
     values.put("FIELD", field)
@@ -100,6 +99,25 @@ class DataBaseAdapter(_context: Context) {
         return pwd
       case 0 => cursor.close()
         return "NOT_EXISTS"
+    }
+  }
+
+  def getUserDetails(userName: String): UserDetails = {
+    val cursor: Cursor = db.query(TBL_USER, null, WHERE_USERNAME, Array(userName), null, null, null)
+    cursor.getCount match {
+      case 1 => cursor.moveToFirst()
+        val user = UserDetails(
+          cursor.getString(cursor.getColumnIndex("USERNAME")),
+          cursor.getString(cursor.getColumnIndex("FULLNAME")),
+          ACTIVE,
+          CurrentScore(cursor.getString(cursor.getColumnIndex("TOTAL_ANS")), cursor.getString(cursor.getColumnIndex("TOTAL_QUES"))),
+          cursor.getString(cursor.getColumnIndex("FIELD")),
+          cursor.getString(cursor.getColumnIndex("LAST_UPD_DATE")))
+        cursor.close()
+        return user
+      //TODO validate that below condition will never occur
+      //case 0 => cursor.close()
+      //  return UserDetails("",)
     }
   }
 

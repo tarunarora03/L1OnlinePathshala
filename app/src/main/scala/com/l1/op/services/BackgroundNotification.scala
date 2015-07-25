@@ -8,7 +8,7 @@ import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.l1.op.R
-import com.l1.op.activity.SignInSignUpActivity
+import com.l1.op.activity.SplashActivity
 import com.l1.op.helper.DataBaseAdapter
 
 
@@ -44,7 +44,7 @@ class BackgroundNotificationService extends Service {
     Log.d("BackgroundPurge", s"Total records deleted older than 7 days ${recordDeleted}")
 
     val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE).asInstanceOf[NotificationManager]
-    val mIntent: Intent = new Intent(this, classOf[SignInSignUpActivity])
+    val mIntent: Intent = new Intent(this, classOf[SplashActivity])
     val pendingIntent = PendingIntent.getActivity(context, 0, mIntent, PendingIntent.FLAG_CANCEL_CURRENT)
     val builder: NotificationCompat.Builder = new NotificationCompat.Builder(this)
       .setContentIntent(pendingIntent)

@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent">
-
-    <!--  header_r Starts-->
-    <ImageView
-        android:id="@+id/header"
-        android:layout_width="fill_parent"
-        android:layout_height="45dip"
-        android:background="@layout/header_repeat"
-        android:clickable="true"
-        android:contentDescription="L1OnlinePathshala"
-        android:orientation="vertical"></ImageView>
-    <!--  header_r Ends -->
-
+    android:layout_height="fill_parent">
     <!-- Footer Start -->
     <!-- Place footer next to header to set z-index property to minus value -->
     <LinearLayout
@@ -22,15 +10,16 @@
         android:layout_height="45dip"
         android:layout_alignParentBottom="true"
         android:background="@layout/footer_repeat"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+
+    </LinearLayout>
     <!-- Footer Ends -->
 
     <!-- Person Details -->
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header"
         android:layout_marginTop="1dp"
         android:orientation="vertical">
 
@@ -44,9 +33,6 @@
                 style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
                 android:paddingLeft="5dp"
                 android:text="@string/Lwelcome"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -55,7 +41,6 @@
                 android:id="@+id/username_readOnly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/Welcome"
                 android:layout_toRightOf="@+id/Welcome"
                 android:textAlignment="center"
@@ -84,7 +69,6 @@
                 android:id="@+id/scoreResults"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_column="4"
                 android:textAlignment="center"
                 android:textColor="@color/abc_search_url_text_normal"
@@ -117,80 +101,30 @@
             android:background="#ff101eff" />
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/questionviewpager"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/viewmanager"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/questionHeaderLayout">
+        android:layout_below="@+id/questionHeaderLayout"
+        android:layout_above="@+id/footer">
 
-    </android.support.v4.view.ViewPager>
-
-    <!--
-        <LinearLayout
-            android:id="@+id/questionDtlsLayout"
+        <TextView
+            android:id="@+id/noquestions"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tableLayout"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical">
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:singleLine="false"
+            android:text="@string/no_questions"
+            android:textColor="#ff2f44ff"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/sampleques"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="5dp"
-                android:text="@string/sample_ques" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/questionviewpager"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/ansText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:paddingTop="10dp"
-                android:text="@string/options_ans"
-                android:textColor="#fd000000"
-                android:textStyle="bold" />
+        </android.support.v4.view.ViewPager>
 
-            <RadioGroup
-                android:id="@+id/answers"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/linearLayout"
-                android:paddingLeft="5dp">
-
-                <RadioButton
-                    android:id="@+id/rOpt1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="5:7" />
-
-                <RadioButton
-                    android:id="@+id/rOpt2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1:1" />
-
-                <RadioButton
-                    android:id="@+id/rOpt3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="7:5" />
-
-                <RadioButton
-                    android:id="@+id/rOpt4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="7:9" />
-            </RadioGroup>
-
-        </LinearLayout>
-    -->
-
-
+    </FrameLayout>
 </RelativeLayout>
